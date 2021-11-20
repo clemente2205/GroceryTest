@@ -1,12 +1,9 @@
 ﻿using Newtonsoft.Json;
-using OneSevenTest.Modal;
+using OneSevenTest.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OneSevenTest.Helper
 {
@@ -31,34 +28,43 @@ namespace OneSevenTest.Helper
 
         #endregion Singleton
 
-        public void GetItems()
+        #region Methods
+
+        /// <summary>
+        /// method for get dummy products 
+        /// </summary>
+        public List<TblProduct> GetNewItemsApi()
         {
-            var url = $"https://fakestoreapi.com/products/1";
+            var url = $"https://fakestoreapi.com/products";
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "GET";
             request.ContentType = "application/json";
             request.Accept = "application/json";
+            List<TblProduct> products = new List<TblProduct>();
             try
             {
                 using (WebResponse response = request.GetResponse())
                 {
                     using (Stream strReader = response.GetResponseStream())
                     {
-                        if (strReader == null) return;
+                        if (strReader == null) return products;
                         using (StreamReader objReader = new StreamReader(strReader))
                         {
                             string responseBody = objReader.ReadToEnd();
-
                             string json = JsonConvert.SerializeObject(responseBody);
-                            Product test = JsonConvert.DeserializeObject<Product>(json);
+                            var cleanJson = JsonConvert.DeserializeObject<dynamic>(json);
+                            products = JsonConvert.DeserializeObject<IList<TblProduct>>(cleanJson);
                         }
                     }
                 }
+                return products;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
+
+        #endregion Methods
     }
 }
