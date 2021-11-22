@@ -1,1 +1,1 @@
-OneSevenTest
+Test for work the project compilet with net core 5, use visual studio 2019 or 2022 preview, also needs nugets for entity framework .sqlserver and .sqltools in the project is a folder called scrips, only need to execute that scrip in sql server in order to use entity framework and set datacontext with entity and that table only also in the clas dbsgdl change the line optionsBuilder.UseSqlServer("Server=.\SQLExpress;Database="YOURDATABASE";Trusted_Connection=True;"); with your databasenames 
